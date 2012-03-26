@@ -29,6 +29,7 @@ function autoload_ext($className)
 
 spl_autoload_register('autoload');
 spl_autoload_register('autoload_ext');
+set_include_path(PROJECT_PATH . 'view/');
 
 DI::init();
 

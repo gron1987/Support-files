@@ -25,6 +25,10 @@ class Session
     private $totalPages;
     private $count;
 
+    public function index(){
+        include "Session/index.php";
+    }
+
     public function init()
     {
         $this->page = (!empty($_GET['page'])) ? $_GET['page'] : self::DEFAULT_PAGE;
@@ -34,7 +38,7 @@ class Session
 
     }
 
-    public function temp()
+    public function getData()
     {
         $this->init();
 
@@ -57,7 +61,8 @@ class Session
         $rows = $entity->getRows($start, $this->limit, $this->sort, $this->order);
 
         $responce = $this->createJQGridResponceObject($rows);
-        var_dump(json_encode($responce));
+
+        echo json_encode($responce);
     }
 
     private function createJQGridResponceObject(array $data)
