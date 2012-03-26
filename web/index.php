@@ -3,7 +3,7 @@
 use Core\Loader;
 use Core\DI;
 
-define('PROJECT_PATH', dirname(__FILE__) . '/');
+define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../') . '/');
 
 /**
  * Load class by it's namespace (\\ change to /)
