@@ -25,7 +25,8 @@ class Session
     private $totalPages;
     private $count;
 
-    public function index(){
+    public function index()
+    {
         include "Session/index.php";
     }
 
@@ -71,7 +72,7 @@ class Session
         $responce->page = $this->page;
         $responce->total = $this->totalPages;
         $responce->records = $this->count;
-        foreach($data as $item){
+        foreach ($data as $item) {
             $object = new \stdClass();
             $object->key_id = $item['key_id'];
             $object->user_id = $item['user_id'];
