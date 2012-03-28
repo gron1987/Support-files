@@ -7,6 +7,10 @@
  */
 namespace JQueryGrid;
 
+/**
+ * Structure (class with no methods and only public fields).
+ * JQGrid return object.
+ */
 class JQGridResponce
 {
     public $page=0;

@@ -9,69 +9,62 @@ namespace Session;
 
 use Core\DI;
 use JQueryGrid\JQGridResponce;
+use JQueryGrid\JQGrid;
 
-class Session
-{
-    const DEFAULT_PAGE = 1;
-    const DEFAULT_LIMIT = 20;
-    const DEFAULT_SORT = '1';
-    const DEFAULT_ORDER = '';
-
-    private $page;
-    private $limit;
-    private $sort;
-    private $order;
-
-    private $totalPages;
-    private $count;
+class Session extends JQGrid
+{    
+    private $_totalPages;
+    private $_count;
 
     public function index()
     {
         include "Session/index.php";
     }
 
-    public function init()
-    {
-        $this->page = (!empty($_GET['page'])) ? $_GET['page'] : self::DEFAULT_PAGE;
-        $this->limit = (!empty($_GET['rows'])) ? $_GET['rows'] : self::DEFAULT_LIMIT;
-        $this->sort = (!empty($_GET['sidx'])) ? $_GET['sidx'] : self::DEFAULT_SORT;
-        $this->order = (!empty($_GET['sord'])) ? $_GET['sord'] : self::DEFAULT_ORDER;
-
-    }
-
+    /**
+     * Get Data by Entities getCount() and getRows() methods
+     * Entity get from DI by 'SessionEntity' name.
+     * return json of JQGridResponce object
+     */
     public function getData()
     {
-        $this->init();
+        $this->_init();
 
         /**
          * @var SessionEntity $entity
          */
         $entity = DI::create('SessionEntity');
-        $this->count = $entity->getCount();
+        $entity->init();
+        $this->_count = $entity->getCount();
 
-        if ($this->count > 0) {
-            $this->totalPages = ceil($this->count / $this->limit);
+        if ($this->_count > 0) {
+            $this->_totalPages = ceil($this->_count / $this->_limit);
         } else {
-            $this->totalPages = 0;
+            $this->_totalPages = 0;
         }
-        if ($this->page > $this->totalPages) {
-            $this->page = $this->totalPages;
+        if ($this->_page > $this->_totalPages) {
+            $this->_page = $this->_totalPages;
         }
-        $start = $this->limit * $this->page - $this->limit;
+        $start = $this->_limit * $this->_page - $this->_limit;
 
-        $rows = $entity->getRows($start, $this->limit, $this->sort, $this->order);
+        $rows = $entity->getRows($start, $this->_limit, $this->_sort, $this->_order);
 
-        $responce = $this->createJQGridResponceObject($rows);
+        $responce = $this->_createJQGridResponceObject($rows);
 
         echo json_encode($responce);
     }
 
-    private function createJQGridResponceObject(array $data)
+    /**
+     * Create JQGridResponce object by array with fields
+     * @param array $data
+     * @return \JQueryGrid\JQGridResponce 
+     */
+    protected function _createJQGridResponceObject(array $data)
     {
         $responce = new JQGridResponce();
-        $responce->page = $this->page;
-        $responce->total = $this->totalPages;
-        $responce->records = $this->count;
+        $responce->page = $this->_page;
+        $responce->total = $this->_totalPages;
+        $responce->records = $this->_count;
         foreach ($data as $item) {
             $object = new \stdClass();
             $object->key_id = $item['key_id'];

@@ -8,14 +8,12 @@
 namespace Session;
 
 use Core\DbConnection as DB;
+use JQueryGrid\JQGridEntity;
 
-class SessionEntity
+class SessionEntity extends JQGridEntity
 {
     const TABLE_NAME = 'phpbb3_sessions_keys';
-
-    private $where_str = '';
-    private $where_arr = array();
-
+    
     public function getCount(){
         $sql = "
             SELECT COUNT(*) as `kol`

@@ -32,12 +32,8 @@ class DI
     public static function create($interface)
     {
         if (!empty(self::$_dependencies[$interface])) {
-            if (is_object(self::$_dependencies[$interface])) {
-                return self::$_dependencies[$interface];
-            } else {
-                $class = self::$_dependencies[$interface];
-                return new $class;
-            }
+            $class = self::$_dependencies[$interface];
+            return new $class;
         } else {
             throw new \BadMethodCallException("No dependency created for name(interface): " . $interface);
         }
@@ -52,11 +48,10 @@ class DI
     public static function register($object, $name = '')
     {
         if (!empty($name)) {
+            $className = (is_object($object)) ?  get_class($object) : $object;
             self::$_dependencies[$name] = $object;
         } else {
-            if (is_object($object)) {
-                $className = get_class($object);
-            }
+            $className = (is_object($object)) ?  get_class($object) : $object;
             $reflection = new \ReflectionClass($className);
             $interfaces = $reflection->getInterfaceNames();
             if (!empty($interfaces)) {
