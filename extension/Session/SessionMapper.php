@@ -1,6 +1,6 @@
 <?php
 /**
- * File: SessionEntity.php.
+ * File: SessionMapper.php.
  * User: gron
  * Date: 3/25/12
  * Time: 10:00 PM
@@ -8,9 +8,9 @@
 namespace Session;
 
 use Core\DbConnection as DB;
-use JQueryGrid\JQGridEntity;
+use JQueryGrid\JQGridMapper;
 
-class SessionEntity extends JQGridEntity
+class SessionMapper extends JQGridMapper
 {
     const TABLE_NAME = 'phpbb3_sessions_keys';
     

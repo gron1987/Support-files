@@ -33,7 +33,7 @@ abstract class JQGrid implements JQGridIF
 
     /**
      * Get Data by Entities getCount() and getRows() methods
-     * Entity get from DI by 'SessionEntity' name.
+     * Mapper get from DI by name.
      * return json of JQGridResponce object
      */
     abstract public function getData();

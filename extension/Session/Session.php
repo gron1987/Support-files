@@ -23,7 +23,7 @@ class Session extends JQGrid
 
     /**
      * Get Data by Entities getCount() and getRows() methods
-     * Entity get from DI by 'SessionEntity' name.
+     * Mapper get from DI by 'SessionMapper' name.
      * return json of JQGridResponce object
      */
     public function getData()
@@ -31,11 +31,11 @@ class Session extends JQGrid
         $this->_init();
 
         /**
-         * @var SessionEntity $entity
+         * @var SessionMapper $mapper
          */
-        $entity = DI::create('SessionEntity');
-        $entity->init();
-        $this->_count = $entity->getCount();
+        $mapper = DI::create('SessionMapper');
+        $mapper->init();
+        $this->_count = $mapper->getCount();
 
         if ($this->_count > 0) {
             $this->_totalPages = ceil($this->_count / $this->_limit);
@@ -47,7 +47,7 @@ class Session extends JQGrid
         }
         $start = $this->_limit * $this->_page - $this->_limit;
 
-        $rows = $entity->getRows($start, $this->_limit, $this->_sort, $this->_order);
+        $rows = $mapper->getRows($start, $this->_limit, $this->_sort, $this->_order);
 
         $responce = $this->_createJQGridResponceObject($rows);
 

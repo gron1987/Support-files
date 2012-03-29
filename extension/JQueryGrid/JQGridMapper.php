@@ -1,6 +1,6 @@
 <?php
 /**
- * File: JQGridEntity.php
+ * File: JQGridMapper.php
  * User: gron
  * Date: Mar 27, 2012
  * Time: 12:07:15 PM
@@ -8,9 +8,9 @@
  */
 namespace JQueryGrid;
 
-use JQueryGrid\JQGridEntityIF;
+use JQueryGrid\JQGridMapperIF;
 
-abstract class JQGridEntity implements JQGridEntityIF
+abstract class JQGridMapper implements JQGridMapperIF
 {
     protected $where_str = '';
     protected $where_arr = array();
@@ -24,7 +24,7 @@ abstract class JQGridEntity implements JQGridEntityIF
     public function init()
     {
         if(static::TABLE_NAME === ''){
-            throw new \LogicException('TABLE_NAME constant must be overrided in your entity class. It can\'t be empty string. In class ' . get_class($this));
+            throw new \LogicException('TABLE_NAME constant must be overrided in your mapper class. It can\'t be empty string. In class ' . get_class($this));
         }
         
         if (!empty($_GET['filters'])) {
