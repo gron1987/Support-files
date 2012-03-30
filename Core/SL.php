@@ -53,7 +53,7 @@ class SL
     {
         if (!empty($name)) {
             $className = (is_object($object)) ?  get_class($object) : $object;
-            self::$_dependencies[$name] = $object;
+            self::$_dependencies[$className] = $object;
         } else {
             $className = (is_object($object)) ?  get_class($object) : $object;
             $reflection = new \ReflectionClass($className);
