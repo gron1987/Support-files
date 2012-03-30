@@ -7,7 +7,7 @@
  */
 namespace Session;
 
-use Core\DI;
+use Core\SL;
 use JQueryGrid\JQGridResponce;
 use JQueryGrid\JQGrid;
 
@@ -23,7 +23,7 @@ class Session extends JQGrid
 
     /**
      * Get Data by Entities getCount() and getRows() methods
-     * Mapper get from DI by 'SessionMapper' name.
+     * Mapper get from SL by 'SessionMapper' name.
      * return json of JQGridResponce object
      */
     public function getData()
@@ -33,7 +33,7 @@ class Session extends JQGrid
         /**
          * @var SessionMapper $mapper
          */
-        $mapper = DI::create('SessionMapper');
+        $mapper = SL::create('SessionMapper');
         $mapper->init();
         $this->_count = $mapper->getCount();
 

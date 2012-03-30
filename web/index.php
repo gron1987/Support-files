@@ -1,7 +1,7 @@
 <?php
 
 use Core\Loader;
-use Core\DI;
+use Core\SL;
 
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../') . '/');
 
@@ -31,7 +31,7 @@ spl_autoload_register('autoload');
 spl_autoload_register('autoload_ext');
 set_include_path(PROJECT_PATH . 'view/');
 
-DI::init();
+SL::init();
 
 try {
     $loader = new Loader();
