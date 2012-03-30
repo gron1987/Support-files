@@ -7,6 +7,9 @@
  */
 namespace Core;
 
+/**
+ * Service Locator
+ */
 class SL
 {
     /**
@@ -20,6 +23,7 @@ class SL
      */
     public static function init(){
         self::register('\Session\SessionEntity','SessionEntity');
+        self::register('\JQueryGrid\JQGridResponse','JQGridResponse');
     }
 
     /**
@@ -27,7 +31,7 @@ class SL
      * @static
      * @param $interface
      * @return object
-     * @throws BadMethodCallException
+     * @throws \BadMethodCallException
      */
     public static function create($interface)
     {

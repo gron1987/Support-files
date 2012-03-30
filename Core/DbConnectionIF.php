@@ -13,12 +13,10 @@ interface DbConnectionIF
 {
     /**
      * @static
-     * @abstract
      */
     public static function getInstance();
     /**
      * @static
-     * @abstract
      * @param string $host
      * @param string $username
      * @param string $password
@@ -26,29 +24,29 @@ interface DbConnectionIF
      */
     public static function reInit($host, $username, $password, $db);
     /**
+     * Reset instance. Set $_instance to NULL
      * @static
-     * @abstract
      */
     public static function reset();
 
     /**
-     * @abstract
+     * Return host property
      */
     public function getHost();
     /**
-     * @abstract
+     * Return username property
      */
     public function getUsername();
     /**
-     * @abstract
+     * Return password property
      */
     public function getPassword();
     /**
-     * @abstract
+     * Return DB property
      */
     public function getDb();
     /**
-     * @abstract
+     * Return PDO object
      */
     public function getPDO();
 }

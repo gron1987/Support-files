@@ -96,6 +96,7 @@ class DbConnection implements DbConnectionIF
     }
 
     /**
+     * Return host property
      * @return string
      */
     public function getHost()
@@ -104,14 +105,17 @@ class DbConnection implements DbConnectionIF
     }
 
     /**
+     * Return username property
      * @return string
      */
     public function getUsername()
     {
+        $this->getDb();
         return $this->_username;
     }
 
     /**
+     * Return password property
      * @return string
      */
     public function getPassword()
@@ -120,6 +124,7 @@ class DbConnection implements DbConnectionIF
     }
 
     /**
+     * Return DB property
      * @return string
      */
     public function getDb()
@@ -128,10 +133,12 @@ class DbConnection implements DbConnectionIF
     }
 
     /**
+     * Return PDO object
      * @return null|\PDO
      */
     public function getPDO()
     {
+        $this->getPDO();
         return $this->pdo;
     }
 
