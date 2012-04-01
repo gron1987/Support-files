@@ -130,6 +130,9 @@ $(window).load(function () {
         sendMessage();
     });
     $("#chat").attr({ scrollTop:$("#chat").attr("scrollHeight") });
-    setInterval(unreadedMessages, 1500);
+
+    $(".chat_screen").hide();
+    $(".chat_screen:first").show();
+    //setInterval(unreadedMessages, 1500);
     setInterval(updateUsers,30000);
 });

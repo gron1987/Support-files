@@ -91,12 +91,25 @@ class Messages
     /**
      * Create HTML from array with messages, use MESSAGE_TEMPLATE for html representation
      * @param array $messages
-     * @return string
+     * @return array
      */
     public function createHTMLFromMessages(array $messages){
-        $html = '';
+        $html = array();
 
         foreach($messages as $item){
+            $chat_name = "chat_";
+            // chat name by userID from small to big (to prevent 1_2 , 2_1)
+            $userIds = array($item['id_user_to'],$item['id_user_from']);
+            asort($userIds);
+            foreach($userIds as $id){
+                $chat_name .= $id . "_";
+            }
+            $chat_name = rtrim($chat_name,"_");
+
+            if(!isset($html[$chat_name])){
+                $html[$chat_name] = "";
+            }
+
             /**
              * @var $userFrom \Auth\User
              */
@@ -115,7 +128,7 @@ class Messages
 
             ob_start();
             include static::MESSAGE_TEMPLATE;
-            $html .= ob_get_clean();
+            $html[$chat_name] .= ob_get_clean();
         }
 
         return $html;

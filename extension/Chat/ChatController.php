@@ -85,6 +85,7 @@ class ChatController
      * Output JSON
      */
     public function getNewData(){
+        //TODO: Rewrite this to new logic of messages
         /**
          * @var $messages \Chat\Messages
          */
@@ -93,7 +94,7 @@ class ChatController
         $html = $messages->createHTMLFromMessages($data);
 
         $json = array();
-        $json['chat'.$messages::MAIN_CHAT_ID] = $html;
+        $json['chat'] = $html;
         $json['notification'] = array(
             'totalCount' => sizeOf($data),
             'privateCount' => $messages->getPrivateMessagesCountFromData($data)

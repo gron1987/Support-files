@@ -40,7 +40,11 @@ class User implements UserIF
      */
     public function login(){
         $mapper = $this->_getUserMapper();
-        $result = $this->_setDataToObject($mapper->login());
+        $login = $mapper->login();
+        if(!$login){
+            return false;
+        }
+        $result = $this->_setDataToObject($login);
 
         if($result){
             $_SESSION['userid'] = $this->_id;

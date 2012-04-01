@@ -45,9 +45,11 @@ $socialButtons = rtrim($socialButtons,',');
         </tr>
         <tr>
             <td class="chat">
-                <div id="chat" style="height: 100%; max-width: 1020px; overflow: auto; bottom: 0; position: relative;">
-                    <?= $html ?>
+                <? foreach($html as $id=>$code): ?>
+                <div id="<?= $id ?>" class="chat_screen">
+                    <?= $code ?>
                 </div>
+                <? endforeach; ?>
             </td>
             <td class="user_list" id="users_list">
                 <?= $htmlOnlineUsers ?>

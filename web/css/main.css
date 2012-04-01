@@ -110,3 +110,11 @@ input {
 .private{
     color: #990000;
 }
+
+.chat_screen{
+    height: 100%;
+    max-width: 1020px;
+    overflow: auto;
+    bottom: 0;
+    position: relative;
+}
