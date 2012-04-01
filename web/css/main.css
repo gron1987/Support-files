@@ -1,0 +1,112 @@
+html,body{
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+
+/* Clickjacking */
+body{
+    display: none;
+}
+
+body.auth {
+    margin: 50px 0px;
+    text-align: center;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+#content {
+    width: 300px;
+    margin: 0px auto;
+    text-align: left;
+    padding: 15px;
+    border: 1px dashed #333;
+    background-color: #eee;
+}
+
+label {
+    display: block;
+    float: left;
+    width: 100px;
+}
+
+input {
+    display: block;
+}
+
+.clear {
+    display: block;
+    height: 0px;
+}
+
+.clear10 {
+    display: block;
+    height: 10px;
+}
+
+.error_box {
+    color: #990000;
+    font-weight: bold;
+}
+
+.chat_table {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.bottom_tbl{
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+.chat_table td{
+    padding: 5px;
+}
+
+.chat_table .top {
+    height: 20px;
+}
+
+.chat_table .bottom {
+    height: 40px;
+}
+
+.chat_table .user_list {
+    width: 230px;
+    vertical-align: top;
+}
+
+.chat_table .chat{
+    vertical-align: bottom;
+}
+
+#send_message {
+    width: 100%;
+}
+
+#chat_name{
+    width: 20px;
+    word-wrap: normal;
+}
+
+#button{
+    width: 20px;
+}
+
+.time{
+    font-size: 10px;
+}
+
+.private{
+    color: #990000;
+}

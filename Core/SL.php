@@ -22,24 +22,27 @@ class SL
      * @static
      */
     public static function init(){
-        self::register('\Session\SessionEntity','SessionEntity');
-        self::register('\JQueryGrid\JQGridResponse','JQGridResponse');
+        self::register('\Auth\UserMapper','UserMapper');
+        self::register('\Auth\User','AuthUser');
+        self::register('\Chat\MessagesMapper','MessagesMapper');
+        self::register('\Chat\Messages','ChatMessages');
     }
 
     /**
      * Create object by interface/class name
      * @static
-     * @param $interface
+     * @param $name
      * @return object
      * @throws \BadMethodCallException
      */
-    public static function create($interface)
+    public static function create($name)
     {
-        if (!empty(self::$_dependencies[$interface])) {
-            $class = self::$_dependencies[$interface];
+        if (!empty(self::$_dependencies[$name])) {
+            $class = self::$_dependencies[$name];
             return new $class;
         } else {
-            throw new \BadMethodCallException("No dependency created for name(interface): " . $interface);
+            var_dump(self::$_dependencies);
+            throw new \BadMethodCallException("No dependency created for name(interface): " . $name);
         }
     }
 
@@ -52,8 +55,7 @@ class SL
     public static function register($object, $name = '')
     {
         if (!empty($name)) {
-            $className = (is_object($object)) ?  get_class($object) : $object;
-            self::$_dependencies[$className] = $object;
+            self::$_dependencies[$name] = $object;
         } else {
             $className = (is_object($object)) ?  get_class($object) : $object;
             $reflection = new \ReflectionClass($className);

@@ -27,11 +27,11 @@ class DbConnection implements DbConnectionIF
     /**
      * @var string
      */
-    private $_db = 'test';
+    private $_db = 'chat';
     /**
-     * @var null|\PDO
+     * @var \PDO
      */
-    private $pdo;
+    private $_pdo;
     /**
      * @var DbConnection
      */
@@ -45,7 +45,7 @@ class DbConnection implements DbConnectionIF
      */
     private function __construct($host = '', $username = '', $password = '', $db = '')
     {
-        $this->pdo = null;
+        $this->_pdo = null;
         if (!empty($host)) {
             $this->_host = $host;
         }
@@ -58,7 +58,9 @@ class DbConnection implements DbConnectionIF
         if (!empty($db)) {
             $this->_db = $db;
         }
-        $this->pdo = new \PDO("mysql:dbname=" . $this->_db . ";host=" . $this->_host, $this->_username, $this->_password);
+        $this->_pdo = new \PDO("mysql:dbname=" . $this->_db . ";host=" . $this->_host, $this->_username, $this->_password);
+        // set UTF-8 directly
+        $this->_pdo->exec("SET NAMES 'utf8'");
     }
 
     /**
@@ -139,7 +141,7 @@ class DbConnection implements DbConnectionIF
     public function getPDO()
     {
         $this->getPDO();
-        return $this->pdo;
+        return $this->_pdo;
     }
 
     /**
@@ -149,7 +151,10 @@ class DbConnection implements DbConnectionIF
      * @return \PDOStatement
      */
     public function execute($sql,$data=array()){
-        $query = $this->pdo->prepare($sql);
+        if($this->_pdo === null){
+            throw new \RuntimeException("PDO object must be created before execute statement");
+        }
+        $query = $this->_pdo->prepare($sql);
         $query->execute($data);
         return $query;
     }

@@ -17,6 +17,8 @@ namespace Core;
  */
 class Loader
 {
+    const DEFAULT_METHOD = "index";
+
     /**
      * Addon directories
      * @var array
@@ -42,7 +44,7 @@ class Loader
     {
         $request_uri = preg_replace('/\\?.*/i', '', $request_uri);
         if($request_uri === '/'){
-            throw new \InvalidArgumentException("No class in request URL was given");
+            throw new \RuntimeException("No class in request URL was given");
         }else{
             $this->server = explode('/', trim($request_uri, '/'));
         }
@@ -56,12 +58,12 @@ class Loader
     public function loadClass()
     {
         if (!empty($this->server[1]) && ($this->isFileExsists())) {
-            $class_name = $this->server[0] . '\\' . $this->server[1];
+            $class_name = $this->server[0] . '\\' . $this->server[1] . 'Controller';
             $this->class = new $class_name;
             array_shift($this->server);
             array_shift($this->server);
         } else {
-            $class_name = $this->server[0] . '\\' . $this->server[0];
+            $class_name = $this->server[0] . '\\' . $this->server[0] . 'Controller';
             $this->class = new $class_name;
             array_shift($this->server);
         }
@@ -71,14 +73,18 @@ class Loader
 
     /**
      * Call loading class method from $this->server array
+     * If nothing call method from DEFAULT_METHOD
      * @throws \BadMethodCallException
      */
     public function loadMethod(){
         $method = array_shift($this->server);
+        if($method === null){
+            $method = self::DEFAULT_METHOD;
+        }
         if(method_exists($this->class,$method)){
             call_user_func(array($this->class,$method),$this->server);
         }else{
-            throw new \BadMethodCallException('No method ' . $method . ' in class ' . get_class($this->class));
+            throw new \RuntimeException('No method ' . $method . ' in class ' . get_class($this->class));
         }
     }
 
