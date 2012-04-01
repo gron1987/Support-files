@@ -140,7 +140,6 @@ class DbConnection implements DbConnectionIF
      */
     public function getPDO()
     {
-        $this->getPDO();
         return $this->_pdo;
     }
 

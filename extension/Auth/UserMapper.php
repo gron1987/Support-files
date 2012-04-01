@@ -70,7 +70,7 @@ class UserMapper implements UserMapperIF
     }
 
     /**
-     * Check is login in DB or not
+     * Check is login in DB or not.
      * @param string $login
      * @return bool
      */
@@ -84,7 +84,7 @@ class UserMapper implements UserMapperIF
         $query = DbConnection::getInstance()->execute($sql,array($login));
         $result = $query->fetch(\PDO::FETCH_ASSOC);
 
-        if($result['kol'] === 0){
+        if($result['kol'] == 1){
             return true;
         }
         return false;
@@ -153,7 +153,6 @@ class UserMapper implements UserMapperIF
      * @return array
      */
     public function getOnlineUsers($chatId){
-        //TODO: From chat id
         $sql = "
             SELECT *
             FROM " . self::TABLE_NAME . "
@@ -168,5 +167,131 @@ class UserMapper implements UserMapperIF
         $result = $query->fetchAll(\PDO::FETCH_ASSOC);
 
         return $result;
+    }
+
+    /**
+     * Register new user
+     * @param string $login
+     * @param string $pass
+     * @return int
+     */
+    public function registerUser($login,$pass)
+    {
+        $login = addslashes(htmlspecialchars($login));
+
+        $sql = "
+            INSERT INTO " . static::TABLE_NAME . "(login,password,last_update)
+            VALUES(?,?,?)
+        ";
+
+        DbConnection::getInstance()->execute($sql,array($login,md5($pass),microtime(true)*MICROSECOND));
+        return DbConnection::getInstance()->getPDO()->lastInsertId();
+    }
+
+    /**
+     * Get user data by Facebook id
+     * @param $id
+     * @return array
+     */
+    public function getByFacebook($id){
+        $sql = "
+            SELECT *
+            FROM " . static::TABLE_NAME . "
+            WHERE facebook = ?
+        ";
+
+        $query = DbConnection::getInstance()->execute($sql,array($id));
+        return $query->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Set user facebook id
+     * @param $id
+     */
+    public function setFacebook($id){
+        $sql = "
+            UPDATE " . static::TABLE_NAME . "
+            SET facebook = ?
+            WHERE id = ?
+        ";
+
+        DbConnection::getInstance()->execute($sql,array($id,$_SESSION['userid']));
+    }
+
+    /**
+     * Get user data by VK id
+     * @param $id
+     * @return array
+     */
+    public function getByVk($id){
+        $sql = "
+            SELECT *
+            FROM " . static::TABLE_NAME . "
+            WHERE vk = ?
+        ";
+
+        $query = DbConnection::getInstance()->execute($sql,array($id));
+        return $query->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Set user VK id
+     * @param $id
+     */
+    public function setVk($id)
+    {
+        $sql = "
+            UPDATE " . static::TABLE_NAME . "
+            SET vk = ?
+            WHERE id = ?
+        ";
+
+        DbConnection::getInstance()->execute($sql,array($id,$_SESSION['userid']));
+    }
+
+    /**
+     * Get user data by Google id
+     * @param $id
+     * @return array
+     */
+    public function getByGoogle($id){
+        $sql = "
+            SELECT *
+            FROM " . static::TABLE_NAME . "
+            WHERE google = ?
+        ";
+
+        $query = DbConnection::getInstance()->execute($sql,array($id));
+        return $query->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Set google ID
+     * @param $id
+     */
+    public function setGoogle($id)
+    {
+        $sql = "
+            UPDATE " . static::TABLE_NAME . "
+            SET google = ?
+            WHERE id = ?
+        ";
+
+        DbConnection::getInstance()->execute($sql,array($id,$_SESSION['userid']));
+    }
+
+    /**
+     * Set username (last name + first name)
+     * @param string $username
+     */
+    public function setUsername($username)
+    {
+        $sql = "
+            UPDATE " . static::TABLE_NAME . "
+            SET username = ?
+            WHERE id = ?
+        ";
+
+        DbConnection::getInstance()->execute($sql,array($username,$_SESSION['userid']));
     }
 }

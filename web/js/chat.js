@@ -27,7 +27,7 @@ function sendUnSendedMessages() {
                 type:'POST',
                 url:'/Chat/addMessage/',
                 data:postData,
-                success:function () {
+                success:function (data) {
                     $('#send_message').val('');
                     unSendedMessages.shift();
                 }
@@ -49,9 +49,14 @@ function sendMessage() {
             type:'POST',
             url:'/Chat/addMessage/',
             data:postData,
-            success:function () {
-                $('#send_message').val('');
-                sendUnSendedMessages();
+            success:function (data) {
+                if(data != ""){
+                    var object = $.parseJSON(data);
+                    alert(object.error);
+                }else{
+                    $('#send_message').val('');
+                    sendUnSendedMessages();
+                }
             },
             error:function () {
                 unSendedMessages.push(postData);

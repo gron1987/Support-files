@@ -44,4 +44,43 @@ interface UserMapperIF
      * @param int $chatId
      */
     public function getOnlineUsers($chatId);
+    /**
+     * Register new user
+     */
+    public function registerUser($login,$pass);
+    /**
+     * Get user data by Facebook ID
+     * @param $id
+     */
+    public function getByFacebook($id);
+    /**
+     * Set user facebook id
+     * @param $id
+     */
+    public function setFacebook($id);
+    /**
+     * Get user data by VK id
+     * @param $id
+     */
+    public function getByVk($id);
+    /**
+     * Set user VK id
+     * @param $id
+     */
+    public function setVk($id);
+    /**
+     * Get user data by google ID
+     * @param $id
+     */
+    public function getByGoogle($id);
+    /**
+     * Set user google id
+     * @param $id
+     */
+    public function setGoogle($id);
+    /**
+     * Set username (last name + first name)
+     * @param $username
+     */
+    public function setUsername($username);
 }

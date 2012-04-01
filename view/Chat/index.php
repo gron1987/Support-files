@@ -2,7 +2,21 @@
 /**
  * @var $html string
  * @var $htmlOnlineUsers string
+ * @var $user \Auth\User
  */
+
+$socialButtons = "";
+if($user->getFacebook() == 0){
+    $socialButtons .= "facebook,";
+}
+if($user->getVk() == 0){
+    $socialButtons .= "vkontakte,";
+}
+if($user->getGoogle() == 0){
+    $socialButtons .= "google,";
+}
+$socialButtons = rtrim($socialButtons,',');
+
 ?>
 <?php include_once('header.php'); ?>
 <script type="text/javascript" src="/js/chat.js"></script>
@@ -11,7 +25,22 @@
         <tr class="top">
             <td colspan="2">
                 <input type="button" id="allow_desktop_notification" value="Allow Desktop Notifications" />
-                Chats here + join social networks
+                <? if($socialButtons): ?>
+                <script src="http://ulogin.ru/js/ulogin.js"></script>
+                <div id="uLogin" x-ulogin-params="display=small&fields=first_name,last_name&providers=<?= $socialButtons ?>&hidden=&redirect_uri=http%3A%2F%2F91.232.0.132%2FAuth%2FsocialAdd"></div>
+                <? endif; ?>
+                <a class="fr" href="/Auth/logout">Logout</a>
+                <span>
+                    Connected with:
+                    <? if($user->getFacebook()): ?>Facebook<? endif; ?>
+                    <? if($user->getVk()): ?>VK<? endif; ?>
+                    <? if($user->getGoogle()): ?>Google<? endif; ?>
+                    <?
+                    $username = $user->getUsername();
+                    if(!empty($username)): ?>
+                    <br />Your name : <?= $user->getUsername(); ?>, but I use your nickname
+                    <? endif; ?>
+                </span>
             </td>
         </tr>
         <tr>

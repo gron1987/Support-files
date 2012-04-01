@@ -48,6 +48,8 @@ class ChatController
         $onlineUsers = array_reverse($onlineUsers);
         $htmlOnlineUsers = $user->createHTMLOnlineUsers($onlineUsers);
 
+        $user->getCurrentUserData();
+
         include "Chat/index.php";
     }
 
@@ -55,17 +57,27 @@ class ChatController
      * Add message to chat
      */
     public function addMessage(){
+        $error = false;
+
         /**
          * @var $messages \Chat\Messages
          */
         $messages = SL::create('ChatMessages');
-
         $message = $_POST['message'];
         $userTo = !empty($_POST['id_user']) ? $_POST['id_user'] : 0 ;
         $private = !empty($_POST['private']) ? $_POST['private'] : 0 ;
         $idChat = !empty($_POST['id_chat']) ? $_POST['id_chat'] : $messages::MAIN_CHAT_ID ;
 
-        $messages->addMessage($message,$userTo,$private,$idChat);
+        if(GLOBAL_CHAR_FORBIDDEN){
+            if(($idChat == $messages::MAIN_CHAT_ID) && ($userTo == 0) ){
+                echo json_encode(array('error' => "Can't send message to all in main chat"));
+                exit;
+            }
+        }
+
+        if(!$error){
+            $messages->addMessage($message,$userTo,$private,$idChat);
+        }
     }
 
     /**

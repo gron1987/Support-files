@@ -9,6 +9,7 @@ session_start();
 
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../') . '/');
 define('MICROSECOND',10000);
+define('GLOBAL_CHAR_FORBIDDEN',true);
 
 /**
  * Load class by it's namespace (\\ change to /)

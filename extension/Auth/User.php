@@ -28,6 +28,10 @@ class User implements UserIF
     private $_login;
     private $_password;
     private $_lastUpdate;
+    private $_username;
+    private $_facebook;
+    private $_vk;
+    private $_google;
 
     /**
      * Login user, is login will be success - save data to $_SESSION
@@ -51,9 +55,9 @@ class User implements UserIF
      * Check login for free
      * @return bool
      */
-    public function checkLogin(){
+    public function checkLogin($login){
         $mapper = $this->_getUserMapper();
-        $res = $mapper->validateLogin($_REQUEST['login']);
+        $res = $mapper->validateLogin($login);
 
         return $res;
     }
@@ -119,6 +123,10 @@ class User implements UserIF
             $this->_login = $tableData['login'];
             $this->_password = $tableData['password'];
             $this->_lastUpdate = $tableData['last_update'];
+            $this->_username = $tableData['username'];
+            $this->_facebook = $tableData['facebook'];
+            $this->_vk = $tableData['vk'];
+            $this->_google = $tableData['google'];
             return true;
         }
         return false;
@@ -169,5 +177,144 @@ class User implements UserIF
         }
 
         return $html;
+    }
+
+    /**
+     * Register new user
+     * @param string $login
+     * @param string $pass
+     * @return bool
+     */
+    public function registerUser($login, $pass)
+    {
+        if(empty($login) || empty($pass) || (strlen($login) < 3) || (strlen($pass) < 3) ){
+            return false;
+        }
+
+        if($this->checkLogin($login)){
+            return false;
+        }
+
+        $mapper = $this->_getUserMapper();
+        $id = $mapper->registerUser($login,$pass);
+
+        $_SESSION['userid'] = $id;
+        $_SESSION['id'] = md5($id);
+        $_SESSION['pass'] = md5($pass);
+
+        return true;
+    }
+
+    /**
+     * Logout user, remove session data
+     */
+    public function logout(){
+        unset($_SESSION['userid']);
+        unset($_SESSION['id']);
+        unset($_SESSION['pass']);
+    }
+
+    /**
+     * Set social network ID
+     * @param string $network
+     * @param int $id
+     */
+    public function setSocialNetwork($network,$id){
+        $result = false;
+        if($_SESSION['userid'] > 0){
+            $mapper = $this->_getUserMapper();
+            switch($network){
+                case "facebook":
+                    $mapper->setFacebook($id);
+                    break;
+                case "vkontakte":
+                    $mapper->setVk($id);
+                    break;
+                case "google":
+                    $mapper->setGoogle($id);
+                    break;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Get Facebook id
+     * @return int
+     */
+    public function getFacebook(){
+        return $this->_facebook;
+    }
+
+    /**
+     * Get VK id
+     * @return int
+     */
+    public function getVk(){
+        return $this->_vk;
+    }
+
+    /**
+     * Get google id
+     * @return int
+     */
+    public function getGoogle(){
+        return $this->_google;
+    }
+
+    /**
+     * Login user by social network
+     * @param $network
+     * @param $id
+     * @return bool
+     */
+    public function loginBySocial($network, $id)
+    {
+        $mapper = $this->_getUserMapper();
+        $data = false;
+        switch($network){
+            case "facebook":
+                $data = $mapper->getByFacebook($id);
+                break;
+            case "vkontakte":
+                $data = $mapper->getByVk($id);
+                break;
+            case "google":
+                $data = $mapper->getByGoogle($id);
+                break;
+        }
+
+        if($data){
+            $_SESSION['userid'] = $data['id'];
+            $_SESSION['id'] = md5($data['id']);
+            $_SESSION['pass'] = $data['password'];
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Set username
+     * @param $username
+     * @return bool
+     */
+    public function setUsername($username)
+    {
+        if(empty($username)){
+            return false;
+        }
+
+        $mapper = $this->_getUserMapper();
+        $mapper->setUsername($username);
+        return true;
+    }
+
+    /**
+     * Return username
+     */
+    public function getUsername()
+    {
+        return $this->_username;
     }
 }
