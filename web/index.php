@@ -34,7 +34,6 @@ function autoload_ext($className)
 }
 
 function smiles($text){
-    //TODO: Add smiles list
     $text = stripslashes(htmlspecialchars($text));
     $smiles = array(
         "/:\)/" => '<img src="http://i.smiles2k.net/icq_smiles/1.gif" />',
