@@ -5,6 +5,7 @@
  * Date: 3/31/12
  * Time: 5:53 PM
  */
+//TODO: Add method to get messages from all chats
 namespace Chat;
 
 use Core\SL;
@@ -29,7 +30,7 @@ class MessagesMapper implements MessagesMapperIF
      * @param int $idChat
      * @return bool
      */
-    public function addMessage($message, $idUserTo = 0, $private = 0, $idChat = 1)
+    public function addMessage($message, $idUserTo = 0, $private = 0, $idChat = 0)
     {
         if (empty($message)) {
             return false;
@@ -74,12 +75,12 @@ class MessagesMapper implements MessagesMapperIF
          */
         $user = SL::create('AuthUser');
         $user->getCurrentUserData();
-
+        
         $sql = "
             SELECT *
             FROM " . static::TABLE_NAME . "
             WHERE `id_chat` = :idchat AND
-            ( `private` = 0 OR `id_user_from` = :iduser OR `id_user_to` = :iduser )
+            (`id_user_from` = :iduser OR `id_user_to` = :iduser )
             ORDER BY `time` DESC LIMIT 0,$limit
         ";
 
@@ -110,7 +111,7 @@ class MessagesMapper implements MessagesMapperIF
             SELECT *
             FROM " . static::TABLE_NAME . "
             WHERE `id_chat` = :idchat AND
-            ( `private` = 0 OR `id_user_from` = :userid OR `id_user_to` = :userid )
+            (`id_user_from` = :userid OR `id_user_to` = :userid )
             AND `time` >= :fromtime AND `time` <= :totime
             ORDER BY `time` ASC
         ";

@@ -43,11 +43,18 @@ $socialButtons = rtrim($socialButtons,',');
                 </span>
             </td>
         </tr>
+        <tr height="10">
+            <td colspan="2" id="chats_list">
+                <? foreach($html as $id=>$data): ?>
+                    <a href="javascript:<?= $data['js'] ?>" id="select_<?= $id ?>"><?= $id ?></a>
+                <? endforeach; ?>
+            </td>
+        </tr>
         <tr>
-            <td class="chat">
-                <? foreach($html as $id=>$code): ?>
+            <td class="chat" id="chat_zone">
+                <? foreach($html as $id=>$data): ?>
                 <div id="<?= $id ?>" class="chat_screen">
-                    <?= $code ?>
+                    <?= $data['html'] ?>
                 </div>
                 <? endforeach; ?>
             </td>

@@ -1,6 +1,7 @@
 var unSendedMessages = [];
 var unreadedMessagesCount = 0;
 var unreadedPrivateMessagesCount = 0;
+var message = '';
 
 function normalTitle() {
     document.title = "Chat";
@@ -45,6 +46,8 @@ function sendMessage() {
         alert('Private message may only be sended to some users');
     } else {
         postData += "&private=" + $('#message_type').val();
+        message = $('#send_message').val();
+        $('#send_message').val('');
         $.ajax({
             type:'POST',
             url:'/Chat/addMessage/',
@@ -53,6 +56,7 @@ function sendMessage() {
                 if(data != ""){
                     var object = $.parseJSON(data);
                     alert(object.error);
+                    $('#send_message').val(message);
                 }else{
                     $('#send_message').val('');
                     sendUnSendedMessages();
@@ -72,7 +76,15 @@ function unreadedMessages() {
         url:'/Chat/getNewData/',
         success:function (data, status) {
             var object = $.parseJSON(data);
-            if (object.chat1 != "") {
+            $.each(object.chat,function(key,obj){
+                if($('#' + key).length > 0){
+                    $('#' + key).append(obj.html);
+                }else{
+                    $('#chats_list').append('<a href="javascript:' + obj.js + '" id="select_' + key + '">' + key + '</a>');
+                    $('#chat_zone').append('<div id="' + key + '" class="chat_screen" style="display: none;">' + obj.html + '</div>');
+                }
+            });
+            if (object.notification.totalCount > 0) {
                 // desktop notification show only if had private messages
                 if(object.notification.privateCount > 0){
                     var message = "Total unread messages: " + object.notification.totalCount + "\r\n" +
@@ -82,10 +94,9 @@ function unreadedMessages() {
                 unreadedMessagesCount += object.notification.totalCount;
                 unreadedPrivateMessagesCount += object.notification.privateCount;
                 document.title = "Chat (" + unreadedMessagesCount + ")";
-                $('#chat').append(object.chat1);
             }
             setTimeout(function () {
-                $("#chat").attr({ scrollTop:$("#chat").attr("scrollHeight") });
+                $(".chat_screen").attr({ scrollTop:$(".chat_screen").attr("scrollHeight") });
             }, 100);
             updateActivity();
         }
@@ -104,6 +115,13 @@ function updateUsers(){
             updateActivity();
         }
     });
+}
+
+function changeChat(id,userid,login){
+    $(".chat_screen").hide();
+    $("#"+id).show();
+    $('#username').html(login);
+    $('#user_to').val(userid);
 }
 
 function updateActivity() {
@@ -129,10 +147,10 @@ $(window).load(function () {
     $('#send_button').live("click", function () {
         sendMessage();
     });
-    $("#chat").attr({ scrollTop:$("#chat").attr("scrollHeight") });
+    $(".chat_screen").attr({ scrollTop:$(".chat_screen").attr("scrollHeight") });
 
     $(".chat_screen").hide();
     $(".chat_screen:first").show();
-    //setInterval(unreadedMessages, 1500);
+    setInterval(unreadedMessages, 3000);
     setInterval(updateUsers,30000);
 });

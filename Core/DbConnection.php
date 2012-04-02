@@ -152,11 +152,14 @@ class DbConnection implements DbConnectionIF
      * @return \PDOStatement
      */
     public function execute($sql,$data=array()){
+        //TODO: Remove timers
+        //$time = microtime(true);
         if($this->_pdo === null){
             throw new \RuntimeException("PDO object must be created before execute statement");
         }
         $query = $this->_pdo->prepare($sql);
         $query->execute($data);
+        //echo microtime(true) - $time;
         return $query;
     }
 }

@@ -24,7 +24,7 @@ interface MessagesMapperIF
      * @param int $private
      * @param int $idChat
      */
-    public function addMessage($message, $idUserTo = 0, $private = 0, $idChat = 1);
+    public function addMessage($message, $idUserTo = 0, $private = 0, $idChat = 0);
 
     /**
      * Return all messages with limit

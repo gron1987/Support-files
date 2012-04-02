@@ -18,12 +18,14 @@ class Messages
     /**
      * Main chat ID as constant to use (don't use "magic numbers")
      */
-    const MAIN_CHAT_ID = 1;
+    const MAIN_CHAT_ID = 0;
     /**
      * Message representation template path
      */
     const MESSAGE_TEMPLATE = "Chat/messages.php";
 
+    const JS_FUNCTION = "changeChat";
+    
     /**
      * Add message to chat
      * @param string $message
@@ -32,7 +34,7 @@ class Messages
      * @param int $idChat
      * @return bool
      */
-    public function addMessage($message, $idUserTo = 0, $private = 0, $idChat = 1)
+    public function addMessage($message, $idUserTo = 0, $private = 0, $idChat = 0)
     {
         /**
          * @var $messagesMapper \Chat\MessagesMapper
@@ -59,15 +61,15 @@ class Messages
 
     /**
      * Get unreaded messages ( messages between user activity )
-     * @param int $idChat
+     * @param int $chatId
      * @return array
      */
-    public function getUnreadedMessagesFromChat($idChat){
+    public function getUnreadedMessagesFromChat($chatId){
         /**
          * @var $messagesMapper \Chat\MessagesMapper
          */
         $messagesMapper = SL::create('MessagesMapper');
-        $result = $messagesMapper->getUnreadedMessagesFromChat($idChat);
+        $result = $messagesMapper->getUnreadedMessagesFromChat($chatId);
 
         return $result;
     }
@@ -106,10 +108,10 @@ class Messages
             }
             $chat_name = rtrim($chat_name,"_");
 
-            if(!isset($html[$chat_name])){
-                $html[$chat_name] = "";
+            if(!isset($html[$chat_name]['html'])){
+                $html[$chat_name]['html'] = "";
             }
-
+            
             /**
              * @var $userFrom \Auth\User
              */
@@ -126,9 +128,20 @@ class Messages
                 $userTo = null;
             }
 
+            if($_SESSION['userid'] == $userFrom->getId()){
+                if($userTo != null){
+                    $html[$chat_name]['js'] = self::JS_FUNCTION . "('" . $chat_name . "','" . $userTo->getId() . "','" . $userTo->getLogin() . "')";
+                }else{
+                    //TODO: Chat id here
+                    $html[$chat_name]['js'] = self::JS_FUNCTION . "('" . $chat_name . "')";
+                }
+            }else{
+                $html[$chat_name]['js'] = self::JS_FUNCTION . "('" . $chat_name . "','" . $userFrom->getId() . "','" . $userFrom->getLogin() . "')";
+            }
+            
             ob_start();
             include static::MESSAGE_TEMPLATE;
-            $html[$chat_name] .= ob_get_clean();
+            $html[$chat_name]['html'] .= ob_get_clean();
         }
 
         return $html;
