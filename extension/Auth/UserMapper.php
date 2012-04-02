@@ -41,7 +41,7 @@ class UserMapper implements UserMapperIF
         ";
 
         $query = DbConnection::getInstance()->execute($sql,array($_POST['login'],md5($_POST['pass'])));
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $result = $query->fetch();
 
         if($result){
             return $result;
@@ -62,7 +62,7 @@ class UserMapper implements UserMapperIF
         ";
 
         $query = DbConnection::getInstance()->execute($sql,array($_SESSION['id'],$_SESSION['pass']));
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $result = $query->fetch();
 
         static::$_usersData[$result['id']] = $result;
 
@@ -82,7 +82,7 @@ class UserMapper implements UserMapperIF
         ";
 
         $query = DbConnection::getInstance()->execute($sql,array($login));
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $result = $query->fetch();
 
         if($result['kol'] == 1){
             return true;
@@ -109,7 +109,7 @@ class UserMapper implements UserMapperIF
         ";
 
         $query = DbConnection::getInstance()->execute($sql,array($id));
-        $result = $query->fetch(\PDO::FETCH_ASSOC);
+        $result = $query->fetch();
 
         static::$_usersData[$result['id']] = $result;
 
@@ -164,7 +164,7 @@ class UserMapper implements UserMapperIF
         $from = $to - static::ACTIVE_TIME;
 
         $query = DbConnection::getInstance()->execute($sql,array($from,$to));
-        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $query->fetchAll();
 
         return $result;
     }
@@ -201,7 +201,7 @@ class UserMapper implements UserMapperIF
         ";
 
         $query = DbConnection::getInstance()->execute($sql,array($id));
-        return $query->fetch(\PDO::FETCH_ASSOC);
+        return $query->fetch();
     }
 
     /**
@@ -231,7 +231,7 @@ class UserMapper implements UserMapperIF
         ";
 
         $query = DbConnection::getInstance()->execute($sql,array($id));
-        return $query->fetch(\PDO::FETCH_ASSOC);
+        return $query->fetch();
     }
 
     /**
@@ -262,7 +262,7 @@ class UserMapper implements UserMapperIF
         ";
 
         $query = DbConnection::getInstance()->execute($sql,array($id));
-        return $query->fetch(\PDO::FETCH_ASSOC);
+        return $query->fetch();
     }
 
     /**

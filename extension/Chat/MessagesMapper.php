@@ -87,7 +87,7 @@ class MessagesMapper implements MessagesMapperIF
             'idchat' => $idChat,
             'iduser' => $user->getId()
         ));
-        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $query->fetchAll();
 
         $result = array_reverse($result);
 
@@ -122,7 +122,7 @@ class MessagesMapper implements MessagesMapperIF
             'totime' => microtime(true)*MICROSECOND
         ));
 
-        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $query->fetchAll();
 
         return $result;
     }

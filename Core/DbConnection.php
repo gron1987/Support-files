@@ -61,6 +61,8 @@ class DbConnection implements DbConnectionIF
         $this->_pdo = new \PDO("mysql:dbname=" . $this->_db . ";host=" . $this->_host, $this->_username, $this->_password);
         // set UTF-8 directly
         $this->_pdo->exec("SET NAMES 'utf8'");
+        // set default fetch mode to assoc
+        $this->_pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     }
 
     /**
