@@ -11,6 +11,9 @@ namespace JQueryGrid;
 
 use JQueryGrid\JQGridIF;
 
+/**
+ * Abstract class for creating JQGrid resonse object and JQGrid itself
+ */
 abstract class JQGrid implements JQGridIF
 {
 
@@ -32,16 +35,9 @@ abstract class JQGrid implements JQGridIF
     }
 
     /**
-     * Get Data by Entities getCount() and getRows() methods
-     * Mapper get from DI by name.
-     * return json of JQGridResponce object
-     */
-    abstract public function getData();
-
-    /**
-     * Create JQGridResponce object by array with fields
+     * Create JQGridResponse object by array with fields
      * @param array $data
-     * @return \JQueryGrid\JQGridResponce 
+     * @return \JQueryGrid\JQGridResponse
      */
     abstract protected function _createJQGridResponceObject(array $data);
 }

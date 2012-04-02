@@ -7,10 +7,14 @@
  */
 namespace JQueryGrid;
 
+/**
+ * Mapper interface for JQGrid
+ */
 interface JQGridMapperIF
 {
     /**
      * You need override this constant in your mapper class
+     * This is table name in DB
      */
     const TABLE_NAME = '';
     

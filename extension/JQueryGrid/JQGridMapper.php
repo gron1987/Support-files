@@ -10,10 +10,13 @@ namespace JQueryGrid;
 
 use JQueryGrid\JQGridMapperIF;
 
+/**
+ * Abstract mapper for JQGrid mapper object
+ */
 abstract class JQGridMapper implements JQGridMapperIF
 {
-    protected $where_str = '';
-    protected $where_arr = array();
+    protected $_whereStr = '';
+    protected $_whereArr = array();
     
     /**
      * Create object and create WHERE statement.

@@ -7,10 +7,13 @@
  */
 namespace Session;
 
-use Core\DI;
-use JQueryGrid\JQGridResponce;
+use Core\SL;
+use JQueryGrid\JQGridResponse;
 use JQueryGrid\JQGrid;
 
+/**
+ * Class for Session to render JQGrid
+ */
 class Session extends JQGrid
 {    
     private $_totalPages;
@@ -23,8 +26,8 @@ class Session extends JQGrid
 
     /**
      * Get Data by Entities getCount() and getRows() methods
-     * Mapper get from DI by 'SessionMapper' name.
-     * return json of JQGridResponce object
+     * Mapper get from SL by 'SessionMapper' name.
+     * return json of JQGridResponse object
      */
     public function getData()
     {
@@ -33,7 +36,7 @@ class Session extends JQGrid
         /**
          * @var SessionMapper $mapper
          */
-        $mapper = DI::create('SessionMapper');
+        $mapper = SL::create('SessionMapper');
         $mapper->init();
         $this->_count = $mapper->getCount();
 
@@ -49,31 +52,31 @@ class Session extends JQGrid
 
         $rows = $mapper->getRows($start, $this->_limit, $this->_sort, $this->_order);
 
-        $responce = $this->_createJQGridResponceObject($rows);
+        $response = $this->_createJQGridResponceObject($rows);
 
-        echo json_encode($responce);
+        echo json_encode($response);
     }
 
     /**
-     * Create JQGridResponce object by array with fields
+     * Create JQGridResponse object by array with fields
      * @param array $data
-     * @return \JQueryGrid\JQGridResponce 
+     * @return \JQueryGrid\JQGridResponse
      */
     protected function _createJQGridResponceObject(array $data)
     {
-        $responce = new JQGridResponce();
-        $responce->page = $this->_page;
-        $responce->total = $this->_totalPages;
-        $responce->records = $this->_count;
+        $response = SL::create('JQGridResponse');
+        $response->page = $this->_page;
+        $response->total = $this->_totalPages;
+        $response->records = $this->_count;
         foreach ($data as $item) {
             $object = new \stdClass();
             $object->key_id = $item['key_id'];
             $object->user_id = $item['user_id'];
             $object->last_ip = $item['last_ip'];
             $object->last_login = $item['last_login'];
-            $responce->rows[] = $object;
+            $response->rows[] = $object;
         }
 
-        return $responce;
+        return $response;
     }
 }

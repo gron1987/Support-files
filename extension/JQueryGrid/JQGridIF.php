@@ -8,6 +8,9 @@
 
 namespace JQueryGrid;
 
+/**
+ * Interface for creating JQGrid resonse object and JQGrid itself
+ */
 interface JQGridIF
 {
     /**
@@ -28,6 +31,9 @@ interface JQGridIF
      */
     const DEFAULT_ORDER = '';
 
+    /**
+     * Return json of JQGridResponse object
+     */
     public function getData();
 }
 
