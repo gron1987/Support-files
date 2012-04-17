@@ -6,10 +6,14 @@ use Core\Loader;
 use Core\SL;
 
 session_start();
-
+// project directory
 define('PROJECT_PATH', realpath(dirname(__FILE__) . '/../') . '/');
+// 10000 microseconds = 1 second, for don't use "magic numbers"
 define('MICROSECOND',10000);
+// try to do global chat ... Don't need it now, Disallow send messages withour reciever.
 define('GLOBAL_CHAR_FORBIDDEN',true);
+// default action, if no action was given.
+define('DEFAULT_ACTION','Auth');
 
 /**
  * Load class by it's namespace (\\ change to /)
@@ -55,6 +59,7 @@ spl_autoload_register('autoload');
 spl_autoload_register('autoload_ext');
 set_include_path(PROJECT_PATH . 'view/');
 
+// Init Service Location (only strings will be in memory)
 SL::init();
 
 try {

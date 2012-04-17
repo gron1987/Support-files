@@ -63,6 +63,8 @@ class DbConnection implements DbConnectionIF
         $this->_pdo->exec("SET NAMES 'utf8'");
         // set default fetch mode to assoc
         $this->_pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+        // set error mode to exceptions
+        $this->_pdo->setAttribute(\PDO::ATTR_ERRMODE,\PDO::ERRMODE_EXCEPTION);
     }
 
     /**
@@ -152,14 +154,11 @@ class DbConnection implements DbConnectionIF
      * @return \PDOStatement
      */
     public function execute($sql,$data=array()){
-        //TODO: Remove timers
-        //$time = microtime(true);
         if($this->_pdo === null){
             throw new \RuntimeException("PDO object must be created before execute statement");
         }
         $query = $this->_pdo->prepare($sql);
         $query->execute($data);
-        //echo microtime(true) - $time;
         return $query;
     }
 }

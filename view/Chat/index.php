@@ -36,7 +36,7 @@ $socialButtons = rtrim($socialButtons,',');
                     <? if($user->getVk()): ?>VK<? endif; ?>
                     <? if($user->getGoogle()): ?>Google<? endif; ?>
                     <?
-                    $username = $user->getUsername();
+                    $username = trim($user->getUsername());
                     if(!empty($username)): ?>
                     <br />Your name : <?= $user->getUsername(); ?>, but I use your nickname
                     <? endif; ?>

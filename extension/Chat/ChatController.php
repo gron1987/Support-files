@@ -44,9 +44,7 @@ class ChatController
          * @var $user \Auth\User
          */
         $user = SL::create('AuthUser');
-        $onlineUsers = $user->getOnlineUsers(0);
-        $onlineUsers = array_reverse($onlineUsers);
-        $htmlOnlineUsers = $user->createHTMLOnlineUsers($onlineUsers);
+        $htmlOnlineUsers = $this->_getOnlineUserList();
 
         $user->getCurrentUserData();
 
@@ -108,6 +106,19 @@ class ChatController
      * Output JSON
      */
     public function getUserList(){
+        $htmlOnlineUsers = $this->_getOnlineUserList();
+
+        $json = array();
+        $json['users'] = $htmlOnlineUsers;
+
+        echo json_encode($json);
+    }
+
+    /**
+     * Return online users html representation
+     * @return string
+     */
+    private function _getOnlineUserList(){
         /**
          * @var $user \Auth\User
          */
@@ -116,9 +127,6 @@ class ChatController
         $onlineUsers = array_reverse($onlineUsers);
         $htmlOnlineUsers = $user->createHTMLOnlineUsers($onlineUsers);
 
-        $json = array();
-        $json['users'] = $htmlOnlineUsers;
-
-        echo json_encode($json);
+        return $htmlOnlineUsers;
     }
 }

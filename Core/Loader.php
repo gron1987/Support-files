@@ -38,13 +38,15 @@ class Loader
     /**
      * Initialise Loader class, set $this->server property
      * @param string $request_uri request uri like $_SERVER['REQUEST_URI']
-     * @throws \InvalidArgumentException
      */
     public function init($request_uri)
     {
         $request_uri = preg_replace('/\\?.*/i', '', $request_uri);
         if($request_uri === '/'){
-            throw new \RuntimeException("No class in request URL was given");
+            // Default action;
+            $this->server = array('Auth');
+            // Don't need to trow now.
+            // throw new \RuntimeException("No class in request URL was given");
         }else{
             $this->server = explode('/', trim($request_uri, '/'));
         }
@@ -58,23 +60,25 @@ class Loader
     public function loadClass()
     {
         if (!empty($this->server[1]) && ($this->isFileExsists())) {
-            $class_name = $this->server[0] . '\\' . $this->server[1] . 'Controller';
-            $this->class = new $class_name;
-            array_shift($this->server);
+            $this->_createClass($this->server[1]);
             array_shift($this->server);
         } else {
-            $class_name = $this->server[0] . '\\' . $this->server[0] . 'Controller';
-            $this->class = new $class_name;
-            array_shift($this->server);
+            $this->_createClass($this->server[0]);
         }
 
         return $this->class;
     }
 
+    private function _createClass($controllerName){
+        $className = $this->server[0] . '\\' . $controllerName . 'Controller';
+        $this->class = new $className;
+        array_shift($this->server);
+    }
+
     /**
      * Call loading class method from $this->server array
      * If nothing call method from DEFAULT_METHOD
-     * @throws \BadMethodCallException
+     * @throws \RuntimeException
      */
     public function loadMethod(){
         $method = array_shift($this->server);

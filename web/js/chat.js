@@ -86,7 +86,7 @@ function unreadedMessages() {
             });
             if (object.notification.totalCount > 0) {
                 // desktop notification show only if had private messages
-                if(object.notification.privateCount > 0){
+                if((object.notification.privateCount > 0) && (window.webkitNotifications.checkPermission() == 0)){
                     var message = "Total unread messages: " + object.notification.totalCount + "\r\n" +
                         "Private messages: " + object.notification.privateCount;
                     window.webkitNotifications.createNotification("", "New messages",message).show();
@@ -151,6 +151,6 @@ $(window).load(function () {
 
     $(".chat_screen").hide();
     $(".chat_screen:first").show();
-    setInterval(unreadedMessages, 3000);
+    setInterval(unreadedMessages, 1500);
     setInterval(updateUsers,30000);
 });

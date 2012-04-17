@@ -128,12 +128,18 @@ class AuthController
         $s = file_get_contents('http://ulogin.ru/token.php?token=' . $_POST['token'] . '&host=' . $_SERVER['HTTP_HOST']);
         $data = json_decode($s, true);
 
-        /**
-         * @var $user \Auth\User
-         */
-        $user = SL::create('AuthUser');
-        $user->setSocialNetwork($data['network'],$data['uid']);
-        $user->setUsername($data['first_name'].' '.$data['last_name']);
+        if(isset($data['network'])){
+            /**
+             * @var $user \Auth\User
+             */
+            $user = SL::create('AuthUser');
+            try{
+                $user->setSocialNetwork($data['network'],$data['uid']);
+                $user->setUsername($data['first_name'].' '.$data['last_name']);
+            }catch(\PDOException $e){
+                // Try to set duplicate
+            }
+        }
 
         header('Location: /Chat/');
         exit;

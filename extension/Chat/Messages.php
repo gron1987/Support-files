@@ -132,7 +132,7 @@ class Messages
                 if($userTo != null){
                     $html[$chat_name]['js'] = self::JS_FUNCTION . "('" . $chat_name . "','" . $userTo->getId() . "','" . $userTo->getLogin() . "')";
                 }else{
-                    //TODO: Chat id here
+                    //TODO: Chat id here for group chat
                     $html[$chat_name]['js'] = self::JS_FUNCTION . "('" . $chat_name . "')";
                 }
             }else{

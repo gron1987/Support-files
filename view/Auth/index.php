@@ -23,8 +23,12 @@
             <center>
                 <input id="auth" type="submit" value="Auth" />
             </center>
-            <script src="http://ulogin.ru/js/ulogin.js"></script>
-            <div id="uLogin" x-ulogin-params="display=small&fields=first_name,last_name&providers=vkontakte,google,facebook&hidden=&redirect_uri=http%3A%2F%2F91.232.0.132%2FAuth%2FsocialAuth%2F"></div>
+            <br />
+            <center>
+                You may login by social network only when you register and connect them to your account.
+                <script src="http://ulogin.ru/js/ulogin.js"></script>
+                <div id="uLogin" x-ulogin-params="display=small&fields=first_name,last_name&providers=vkontakte,google,facebook&hidden=&redirect_uri=http%3A%2F%2F91.232.0.132%2FAuth%2FsocialAuth%2F"></div>
+            </center>
         </div>
     </form>
 </body>
